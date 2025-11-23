@@ -4,103 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>萬能點餐模擬機 - 實作練習中</title>
-    <!-- 載入 Tailwind CSS 確保響應式設計和高對比 --><script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* 基礎全頁面設定 */
-        html, body {
-            margin: 0; 
-            padding: 0; 
-            height: 100%; /* 讓body佔滿視窗高度 */
-            width: 100%;
-            overflow-x: hidden;
-            box-sizing: border-box;
-        }
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
 
-        /* 使用 Inter 字體並設置基本高對比背景 */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a1a1a; /* 深色背景 */
-            color: #e5e7eb; /* 淺色文字 */
-            display: flex; /* 啟用Flexbox用於居中 */
-            align-items: center; /* 垂直居中 */
-            justify-content: center; /* 水平居中 */
-        }
-        
-        /* 確保內容區塊清晰可辨 */
-        .card {
-            background-color: #2d3748; /* 比背景稍淺的卡片色 */
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
-        }
-        /* 專為優世代設計的特大按鈕 */
-        .action-button {
-            padding: 1.5rem 3rem;
-            font-size: 1.5rem; /* 大字體 */
-            font-weight: bold;
-            transition: transform 0.1s ease;
-            border-radius: 0.75rem; /* 保持按鈕圓角 */
-        }
-        .action-button:active {
-            transform: scale(0.98);
-        }
-        /* 彈出視窗的疊層樣式 */
-        .modal-overlay {
-            position: fixed; 
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); 
-            z-index: 40;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            max-height: 90vh;
-            overflow-y: auto;
-            background-color: #2d3748;
-            border: 4px solid #fcd34d; 
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-        }
-        .option-label {
-            display: block;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            font-size: 1.25rem;
-            font-weight: bold;
-            background-color: #4b5563;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .option-label:hover {
-            background-color: #6b7280;
-        }
-        /* 選中選項的高對比樣式 */
-        input[type="radio"]:checked + .option-label {
-            background-color: #059669; 
-            color: #fff;
-            border: 2px solid #a7f3d0;
-        }
-        /* 圖示樣式 */
-        .item-icon {
-            width: 60px; 
-            height: 60px;
-            margin-right: 1rem;
-            flex-shrink: 0; 
-        }
-        /* 確保 Base64 圖片能適應容器 */
-        .item-icon img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-    </style>
+    <div id="ordering-app" class="card w-full max-w-lg mx-auto p-6 md:p-10 rounded-xl space-y-8">
 
-    <!-- 主要模擬點餐介面 --><div id="ordering-app" class="card w-full max-w-lg mx-auto p-6 md:p-10 rounded-xl space-y-8">
-
-        <!-- 標題與說明 --><header class="text-center space-y-2">
+        <header class="text-center space-y-2">
             <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-400">萬能點餐模擬 (進階含圖示)</h1>
             <p class="text-xl md:text-2xl font-light text-yellow-300">
                 【附錄實作練習】此為模擬頁面，請放心操作，**絕不會付費**。
@@ -108,11 +20,11 @@
             <p class="text-lg text-gray-400">請點選品項後，**記得在彈出視窗中選擇選項**，再結帳。</p>
         </header>
 
-        <!-- 模擬菜單項目 --><div id="menu-items" class="space-y-4">
+        <div id="menu-items" class="space-y-4">
 
-            <!-- 項目 1: 萬能烤箱吐司 (SVG 圖示) --><div class="flex items-center bg-gray-700 p-4 rounded-lg shadow-md">
-                <!-- 圖示 --><div class="item-icon flex items-center justify-center bg-gray-600 rounded-full">
-                    <!-- 烤箱 SVG 圖示 --><svg class="w-10 h-10 text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="flex items-center bg-gray-700 p-4 rounded-lg shadow-md">
+                <div class="item-icon flex items-center justify-center bg-gray-600 rounded-full">
+                    <svg class="w-10 h-10 text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
                         <line x1="22" y1="12" x2="22" y2="14"></line>
                         <line x1="2" y1="12" x2="2" y2="14"></line>
@@ -129,8 +41,8 @@
                 </button>
             </div>
 
-            <!-- 項目 2: 萬能電鍋白米飯 (SVG 圖示) --><div class="flex items-center bg-gray-700 p-4 rounded-lg shadow-md">
-                <!-- 圖示 --><div class="item-icon flex items-center justify-center bg-gray-600 rounded-full">
+            <div class="flex items-center bg-gray-700 p-4 rounded-lg shadow-md">
+                <div class="item-icon flex items-center justify-center bg-gray-600 rounded-full">
                     <svg class="w-10 h-10 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
@@ -144,14 +56,13 @@
                 </button>
             </div>
 
-            <!-- 項目 3: 萬能廚具輕盈湯品 (SVG 圖示：深鍋，無火焰) --><div class="flex items-center bg-gray-700 p-4 rounded-lg shadow-md">
-                <!-- 圖示 --><div class="item-icon flex items-center justify-center bg-gray-600 rounded-full">
-                    <!-- 湯鍋 SVG 圖示 (無火焰) -->
+            <div class="flex items-center bg-gray-700 p-4 rounded-lg shadow-md">
+                <div class="item-icon flex items-center justify-center bg-gray-600 rounded-full">
                     <svg class="w-10 h-10 text-blue-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <!-- 鍋身: 深 U 型，無波紋 --><path d="M4 6h16v8a8 8 0 0 1-8 8 8 8 0 0 1-8-8V6z"></path>
-                        <!-- 左把手 --><path d="M2 8h2"></path>
-                        <!-- 右把手 --><path d="M20 8h2"></path>
-                        <!-- 鍋蓋線 (新增一條線讓頂部更完整) --><line x1="4" y1="6" x2="20" y2="6"></line>
+                        <path d="M4 6h16v8a8 8 0 0 1-8 8 8 8 0 0 1-8-8V6z"></path>
+                        <path d="M2 8h2"></path>
+                        <path d="M20 8h2"></path>
+                        <line x1="4" y1="6" x2="20" y2="6"></line>
                     </svg>
                 </div>
                 <div class="flex-grow space-y-1">
@@ -164,7 +75,7 @@
             </div>
         </div>
 
-        <!-- 購物車清單 (大型顯示) --><div class="bg-yellow-800/50 p-4 rounded-lg">
+        <div class="bg-yellow-800/50 p-4 rounded-lg">
             <h2 class="text-2xl font-bold text-yellow-300 mb-3">您的點餐清單</h2>
             <ul id="cart-list" class="space-y-2 text-xl text-white">
                 <li id="empty-cart-message" class="text-gray-400 italic">尚未點選任何品項。</li>
@@ -174,14 +85,14 @@
             </div>
         </div>
 
-        <!-- 主要結帳按鈕 --><div class="text-center pt-4">
+        <div class="text-center pt-4">
             <button onclick="checkoutSimulation()" class="action-button w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-lg">
                 ✅ 結帳 (模擬操作)
             </button>
         </div>
     </div>
 
-    <!-- 模擬結帳成功訊息 (初始隱藏) --><div id="success-message" class="card w-full max-w-lg mx-auto p-10 rounded-xl space-y-6 text-center hidden">
+    <div id="success-message" class="card w-full max-w-lg mx-auto p-10 rounded-xl space-y-6 text-center hidden">
         <h2 class="text-5xl font-extrabold text-green-400">
             恭喜您！✅
         </h2>
@@ -197,13 +108,13 @@
         </button>
     </div>
 
-    <!-- 步驟二：選項彈出視窗 (Modal) --><div id="options-modal" class="modal-overlay hidden">
+    <div id="options-modal" class="modal-overlay hidden">
         <div class="modal-content w-full max-w-md mx-4 rounded-xl p-6 md:p-8 space-y-4">
             <h2 id="modal-title" class="text-3xl font-extrabold text-white">請選擇烤箱吐司選項</h2>
             <p id="modal-description" class="text-lg text-gray-300">這是**必選**步驟，請點選其中一個選項。</p>
             
             <form id="options-form" class="space-y-3">
-                <!-- 選項會透過 JavaScript 插入此處 --></form>
+                </form>
 
             <div class="flex justify-between space-x-4 pt-4">
                 <button onclick="closeModal()" class="w-full action-button bg-red-600 hover:bg-red-700 text-white rounded-xl text-lg p-3">
@@ -219,7 +130,7 @@
 
     <script>
         let cart = [];
-        let currentItem = null; // 用來暫存當前正在選擇選項的項目
+        let currentItem = null; 
         
         const cartList = document.getElementById('cart-list');
         const totalPriceDisplay = document.getElementById('total-price');
