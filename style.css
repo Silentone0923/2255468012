@@ -1,0 +1,27 @@
+/* 這是通用設定，確保邊距歸零 */
+body, html {
+    margin: 0; 
+    padding: 0; 
+    /* 將 body 最小高度設為 100% 視埠高度 (viewport height) */
+    /* 確保當內容不足時，背景也能填滿整個畫面 */
+    min-height: 100vh; 
+    background-color: #f0f0f0; /* 設定您網站的預設背景色 */
+    font-family: sans-serif;
+}
+
+/* 頁尾樣式 */
+.footer {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    /* 使用絕對定位或 flexbox 確保頁尾貼齊底部是更進階的做法 */
+}
+
+/* 確保內容區塊不會超出螢幕寬度 */
+.content-container {
+    padding: 20px;
+    max-width: 100%; /* 確保區塊不會比螢幕寬 */
+    box-sizing: border-box; /* 確保 padding 不會導致區塊溢出 */
+}
