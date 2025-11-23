@@ -128,9 +128,9 @@
     </div>
 
 
-    <script>
-        let cart = [];
-        let currentItem = null; 
+<script>
+        let cart = []; // 購物車原始清單
+        let currentItem = null; // 用來暫存當前正在選擇選項的項目
         
         const cartList = document.getElementById('cart-list');
         const totalPriceDisplay = document.getElementById('total-price');
@@ -220,7 +220,8 @@
             const finalName = `${currentItem.name} (${selectedModifier.label.replace(/ \(.+\)$/, '')})`;
 
             // 加入購物車
-            cart.push({ name: finalName, price: finalPrice });
+            // *** 這裡我們直接將品項加入原始清單，數量顯示交給 updateCartDisplay 處理 ***
+            cart.push({ name: finalName, price: finalPrice }); 
             updateCartDisplay();
             
             // 關閉視窗
@@ -246,28 +247,50 @@
         }
 
         /**
-         * 更新購物車清單和總金額顯示 (邏輯不變)
+         * *** 修正功能：更新購物車清單和總金額顯示，並進行分組和數量計算 ***
          */
         function updateCartDisplay() {
-            cartList.innerHTML = '';
             let total = 0;
+            const groupedCart = {};
 
+            // 1. 彙總原始清單 (cart) 中的相同品項
+            cart.forEach(item => {
+                // 使用名稱和價格作為唯一鍵
+                const key = `${item.name}|${item.price}`;
+                
+                if (!groupedCart[key]) {
+                    groupedCart[key] = {
+                        name: item.name,
+                        price: item.price,
+                        quantity: 0
+                    };
+                }
+                groupedCart[key].quantity++;
+                total += item.price; // 累計總金額
+            });
+
+            cartList.innerHTML = '';
+
+            // 2. 根據彙總後的清單渲染 HTML 
             if (cart.length === 0) {
                 emptyCartMessage.classList.remove('hidden');
             } else {
                 emptyCartMessage.classList.add('hidden');
                 
-                // 計算總金額並生成清單 HTML
-                cart.forEach((item, index) => {
-                    total += item.price;
+                Object.values(groupedCart).forEach(groupedItem => {
                     const li = document.createElement('li');
                     li.className = 'flex justify-between items-center';
+                    
+                    const subTotal = groupedItem.price * groupedItem.quantity;
+
                     li.innerHTML = `
-                        <span>${item.name}</span>
+                        <span>${groupedItem.name} 
+                            <span class="text-indigo-300 font-extrabold">x${groupedItem.quantity}</span>
+                        </span>
                         <div class="flex items-center space-x-2">
-                            <span>${item.price} 元</span>
-                            <button onclick="removeItem(${index})" class="text-red-400 hover:text-red-300 font-bold text-lg leading-none transition duration-150">
-                                X
+                            <span>${subTotal} 元</span>
+                            <button onclick="removeOneUnit('${groupedItem.name}', ${groupedItem.price})" class="text-red-400 hover:text-red-300 font-bold text-lg leading-none transition duration-150">
+                                -1
                             </button>
                         </div>
                     `;
@@ -275,17 +298,28 @@
                 });
             }
 
+            // 3. 更新總金額
             totalPriceDisplay.textContent = total;
         }
 
         /**
-         * 從購物車移除項目 (邏輯不變)
+         * *** 新增功能：從購物車中移除單一個體 (單一數量) ***
          */
-        function removeItem(index) {
-            cart.splice(index, 1);
-            updateCartDisplay();
-        }
+        function removeOneUnit(nameToRemove, priceToRemove) {
+            // 在原始 cart 陣列中，尋找第一個符合名稱和價格的品項
+            const indexToRemove = cart.findIndex(item => item.name === nameToRemove && item.price === priceToRemove);
 
+            if (indexToRemove !== -1) {
+                cart.splice(indexToRemove, 1); // 移除找到的第一個品項
+                updateCartDisplay(); // 重新渲染購物車
+            }
+        }
+        
+        // 舊的 removeItem 函數 (依據 index 移除) 已被取代，無需使用。
+        function removeItem(index) {
+            // 此函數已過時，不應被使用。
+        }
+        
         /**
          * 模擬結帳流程 (邏輯不變)
          */
