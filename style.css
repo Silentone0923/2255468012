@@ -1,27 +1,91 @@
-/* 這是通用設定，確保邊距歸零 */
-body, html {
-    margin: 0; 
-    padding: 0; 
-    /* 將 body 最小高度設為 100% 視埠高度 (viewport height) */
-    /* 確保當內容不足時，背景也能填滿整個畫面 */
-    min-height: 100vh; 
-    background-color: #f0f0f0; /* 設定您網站的預設背景色 */
-    font-family: sans-serif;
-}
-
-/* 頁尾樣式 */
-.footer {
+/* 基礎全頁面設定：針對 GitHub Pages 獨立運行的環境 */
+html, body {
+    margin: 0;
+    padding: 0;
+    /* *** 關鍵修正：確保 body 至少佔滿整個螢幕視埠高度 *** */
+    min-height: 100vh;
     width: 100%;
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    /* 使用絕對定位或 flexbox 確保頁尾貼齊底部是更進階的做法 */
+    /* 移除不必要的 overflow-x: hidden; */
+    box-sizing: border-box;
 }
 
-/* 確保內容區塊不會超出螢幕寬度 */
-.content-container {
-    padding: 20px;
-    max-width: 100%; /* 確保區塊不會比螢幕寬 */
-    box-sizing: border-box; /* 確保 padding 不會導致區塊溢出 */
+/* 使用 Inter 字體並設置基本高對比背景 */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #1a1a1a; /* 深色背景 */
+    color: #e5e7eb; /* 淺色文字 */
+    /* *** 關鍵修正：移除 Flexbox 居中，改回預設的區塊堆疊 *** */
+    /* 避免內容過長時，Flexbox 將整個內容推到中間，造成上下空白 */
+    display: block; 
+}
+ 
+/* 確保內容區塊清晰可辨 */
+.card {
+    background-color: #2d3748; /* 比背景稍淺的卡片色 */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+}
+/* 專為優世代設計的特大按鈕 */
+.action-button {
+    padding: 1.5rem 3rem;
+    font-size: 1.5rem; /* 大字體 */
+    font-weight: bold;
+    transition: transform 0.1s ease;
+    border-radius: 0.75rem; /* 保持按鈕圓角 */
+}
+.action-button:active {
+    transform: scale(0.98);
+}
+/* 彈出視窗的疊層樣式 */
+.modal-overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); 
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+    background-color: #2d3748;
+    border: 4px solid #fcd34d; 
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+.option-label {
+    display: block;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    background-color: #4b5563;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.option-label:hover {
+    background-color: #6b7280;
+}
+/* 選中選項的高對比樣式 */
+input[type="radio"]:checked + .option-label {
+    background-color: #059669; 
+    color: #fff;
+    border: 2px solid #a7f3d0;
+}
+/* 圖示樣式 */
+.item-icon {
+    width: 60px; 
+    height: 60px;
+    margin-right: 1rem;
+    flex-shrink: 0; 
+}
+/* 確保 Base64 圖片能適應容器 */
+.item-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
